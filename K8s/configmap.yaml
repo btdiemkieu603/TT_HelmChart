@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webfood-config
+data:
+  #backendurl
+  REACT_APP_BACKEND_URL: "http://webfood.com"
+
+  #cau hinh backend
+  allowedOrigins: "http://webfood.com"
+  SPRING_DATASOURCE_URL: "jdbc:mysql://mysql-service:3306/mydatabase"
+  SPRING_DATASOURCE_USERNAME: "root"
+  
+  MYSQL_DATABASE: "mydatabase"
+  MYSQL_USER: root
+ 
+
+
+
+
+
+  
