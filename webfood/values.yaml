@@ -1,0 +1,69 @@
+
+ingress:
+  host: webfood.com
+  paths:
+    backend: /api
+    frontend: /
+
+secret:
+  type: Opaque
+  data: 
+    ROOT_PASSWORD: azYwMzA3MTA=
+    USER_PASSWORD: azYwMzA3MTA=
+
+configmap:
+  data: 
+    MYSQL_USER: root
+    MYSQL_DATABASE: mydatabase
+    allowedOrigins: http://webfood.com
+    REACT_APP_BACKEND_URL: http://webfood.com
+
+    
+
+mysql:
+  persistentVolume:
+    capacity:
+      storage: 10Gi
+    accessModes: ReadWriteOnce
+    hostPath:
+      path: /data/mysql
+  svc:
+    accessModes: ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+  deployment:
+    images: mysql:8.0
+    ports:
+      containerPort: 3306
+    volumeMounts:
+      mountPath: /var/lib/mysql
+    replicas: 1
+  service:
+    ports:
+      port: 3306
+      targetPort: 3306
+
+  
+
+backend:
+  deployment:
+    image: diemkieu/nln_backend:v4
+    ports:
+      containerPort: 8080
+  service:
+    ports:
+      port: 8080
+      targetPort: 8080
+  replicas: 1
+
+frontend:
+  deployment:
+    image: diemkieu/nln_frontend:v4
+    ports:
+      containerPort: 3000
+  service:
+    ports:
+      port: 3000
+      targetPort: 3000
+  replicas: 1

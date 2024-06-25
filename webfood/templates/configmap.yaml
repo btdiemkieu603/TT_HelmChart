@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-configmap
+data:
+  #backendurl
+  REACT_APP_BACKEND_URL: {{ .Values.configmap.data.REACT_APP_BACKEND_URL }}
+
+  #cau hinh backend
+  allowedOrigins: {{ .Values.configmap.data.allowedOrigins }}
+  SPRING_DATASOURCE_URL: "jdbc:mysql://{{ .Release.Name }}-mysql-service:{{ .Values.mysql.service.ports.port }}/{{ .Values.configmap.data.MYSQL_DATABASE}}"
+  SPRING_DATASOURCE_USERNAME: {{ .Values.configmap.data.MYSQL_USER }}
+  
+  #mysql
+  MYSQL_DATABASE: {{ .Values.configmap.data.MYSQL_DATABASE}}
+  MYSQL_USER: {{ .Values.configmap.data.MYSQL_USER }}
+ 
+
+
+
+
+
+  

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-backend-deployment
+  labels:
+    app: {{ .Release.Name }}-backend
+spec:
+  replicas: {{ .Values.backend.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-backend
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-backend
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-backend
+        image: {{ .Values.backend.deployment.image }}
+        ports:
+        - containerPort: {{ .Values.backend.deployment.ports.containerPort }}
+        env:
+        - name: SPRING_DATASOURCE_URL
+          #value: jdbc:mysql://mysql-service:3306/mydatabase
+          valueFrom:
+           configMapKeyRef:
+             name: {{ .Release.Name }}-configmap
+             key: SPRING_DATASOURCE_URL
+        - name: SPRING_DATASOURCE_USERNAME
+          #value: root
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Release.Name }}-configmap
+              key: SPRING_DATASOURCE_USERNAME
+        - name: SPRING_DATASOURCE_PASSWORD
+          #value: k6030710
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-secret
+              key: SPRING_DATASOURCE_PASSWORD
+        - name: allowedOrigins
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Release.Name }}-configmap
+              key: allowedOrigins

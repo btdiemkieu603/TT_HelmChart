@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-mysql-deployment
+  labels:
+    app: {{ .Release.Name }}-mysql
+spec:
+  replicas: {{ .Values.mysql.deployment.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-mysql
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-mysql
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-mysql
+        image: {{ .Values.mysql.deployment.images }}
+        ports:
+        - containerPort: {{ .Values.mysql.deployment.ports.containerPort }}
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          #value: k6030710
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-secret
+              key: ROOT_PASSWORD
+        - name: MYSQL_DATABASE
+          #value: mydatabase
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Release.Name }}-configmap
+              key: MYSQL_DATABASE
+        
+        volumeMounts:
+        - mountPath: {{ .Values.mysql.deployment.volumeMounts.mountPath }}
+          name: {{ .Release.Name }}-mysql-persistent-storage
+         
+      volumes:
+      - name: {{ .Release.Name }}-mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-mysql-pvc

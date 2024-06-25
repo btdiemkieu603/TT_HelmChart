@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  webfood:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-06-14T00:42:49.0694976+07:00"
+    description: A Helm chart for Kubernetes
+    digest: 50fd0d3cce8778eb27d9251752b66dc67accf9431d09910d529756a6ec61e6b0
+    name: webfood
+    type: application
+    urls:
+    - release/webfood-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-06-14T00:42:49.067912+07:00"
